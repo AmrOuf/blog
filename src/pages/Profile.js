@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
 import Navbar from '../components/Navbar/Navbar';
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
@@ -21,8 +22,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = () => {
+const Profile = ({ history }) => {
   const classes = useStyles();
+  console.log(history);
   return (
     <Fragment>
       <Navbar></Navbar>
@@ -40,4 +42,11 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    users: state.users,
+    blogs: state.blogs,
+  };
+};
+
+export default connect(mapStateToProps)(Profile);

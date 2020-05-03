@@ -159,7 +159,6 @@ const SignUp = ({ history, addUser }) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  console.log('map dispatch to props');
   return {
     addUser: (user) => dispatch(addUser(user)),
   };

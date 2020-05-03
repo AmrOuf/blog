@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -7,9 +9,12 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+
+import { setFilter } from '../../actions/search';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -73,12 +78,16 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  mr: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
-const Navbar = () => {
+const Navbar = ({ search, setFilter }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [placeholder, setPlaceholder] = useState('Search...');
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -142,6 +151,33 @@ const Navbar = () => {
     </Menu>
   );
 
+  const handleChangeFilter = (filter) => {
+    setFilter(filter);
+
+    // change placeholder
+    switch (filter) {
+      case 0:
+        setPlaceholder('Search...');
+        break;
+      case 1:
+        setPlaceholder('Search users...');
+        break;
+      case 2:
+        setPlaceholder('Search blogs...');
+        break;
+      case 3:
+        setPlaceholder('Search tags...');
+        break;
+      default:
+        setPlaceholder('Search...');
+    }
+  };
+
+  const handleSearch = (data) => {
+    console.log(data);
+    // change in state
+  };
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -154,14 +190,47 @@ const Navbar = () => {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder={placeholder}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.mr}
+            onClick={() => handleChangeFilter(0)}
+          >
+            all
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.mr}
+            onClick={() => handleChangeFilter(1)}
+          >
+            users
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.mr}
+            onClick={() => handleChangeFilter(2)}
+          >
+            title
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.mr}
+            onClick={() => handleChangeFilter(3)}
+          >
+            tags
+          </Button>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton
@@ -194,4 +263,16 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const mapStateToProps = (state) => {
+  return {
+    search: state.search,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setFilter: (filter) => dispatch(setFilter(filter)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
