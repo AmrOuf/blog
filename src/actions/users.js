@@ -3,4 +3,10 @@ const addUser = (user) => ({
   user: user,
 });
 
-export { addUser };
+const editUser = (id, user) => ({
+  type: 'EDIT_USER',
+  id: id,
+  user: user,
+});
+
+export { addUser, editUser };

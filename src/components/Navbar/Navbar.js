@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ search, setFilter }) => {
+const Navbar = ({ search, setFilter, history }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -152,7 +152,8 @@ const Navbar = ({ search, setFilter }) => {
   );
 
   const handleChangeFilter = (filter) => {
-    setFilter(filter);
+    // setFilter(filter);
+    search.activeFilter = filter;
 
     // change placeholder
     switch (filter) {
@@ -174,8 +175,13 @@ const Navbar = ({ search, setFilter }) => {
   };
 
   const handleSearch = (data) => {
-    console.log(data);
-    // change in state
+    search.searchQuery = data;
+  };
+
+  const handleSubmitSearch = (e) => {
+    if (e.key === 'Enter') {
+      history.replace('/results');
+    }
   };
 
   return (
@@ -197,6 +203,7 @@ const Navbar = ({ search, setFilter }) => {
               }}
               inputProps={{ 'aria-label': 'search' }}
               onChange={(e) => handleSearch(e.target.value)}
+              onKeyPress={(e) => handleSubmitSearch(e)}
             />
           </div>
           <Button

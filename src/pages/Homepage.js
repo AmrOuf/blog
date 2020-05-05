@@ -1,18 +1,34 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 
 import Navbar from '../components/Navbar/Navbar';
-import BlogCard from '../components/BlogCard/BlogCard';
+import BlogFeed from '../components/BlogFeed/BlogFeed';
+import AddBlogForm from '../components/AddBlogForm/AddBlogForm';
 
-const Homepage = () => {
+const Homepage = ({ history }) => {
   return (
     <Fragment>
-      <Navbar></Navbar>
+      <Navbar history={history}></Navbar>
       <Container>
-        <BlogCard></BlogCard>
+        <Grid container spacing={3}>
+          <Grid item xs={3}></Grid>
+          <Grid item xs={6}>
+            <AddBlogForm></AddBlogForm>
+            <BlogFeed></BlogFeed>
+          </Grid>
+        </Grid>
       </Container>
     </Fragment>
   );
 };
 
-export default Homepage;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps)(Homepage);

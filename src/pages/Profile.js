@@ -2,15 +2,11 @@ import React, { Fragment } from 'react';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import Navbar from '../components/Navbar/Navbar';
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
-import BlogCard from '../components/BlogCard/BlogCard';
 import ProfileBody from '../components/ProfileBody/ProfileBody';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,17 +18,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = ({ history }) => {
+const Profile = ({ users, match, history }) => {
   const classes = useStyles();
-  console.log(history);
+  const id = match.params.id;
+
+  // this (1) should be the logged in user id
+  const loggedInUser = users.find((user) => user.id === 1);
+  const viewedUser = users.find((user) => user.id === +id);
+
   return (
     <Fragment>
-      <Navbar></Navbar>
+      <Navbar history={history}></Navbar>
       <Container className={classes.pt}>
         <Grid container spacing={3}>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
-            <ProfileHeader></ProfileHeader>
+            <ProfileHeader
+              viewedId={match.params.id}
+              viewedUser={viewedUser}
+              loggedInUser={loggedInUser}
+            ></ProfileHeader>
             <Divider className={classes.mt} variant="middle" />
             <ProfileBody></ProfileBody>
           </Grid>

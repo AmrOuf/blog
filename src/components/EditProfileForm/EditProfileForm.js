@@ -10,10 +10,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { editUser } from '../../actions/users';
 
 const useStyles = makeStyles((theme) => ({
   addBtn: {
@@ -40,16 +39,19 @@ const schema = object().shape({
     .required('Password is required!'),
 });
 
-const EditProfileForm = () => {
+const EditProfileForm = ({ users, editUser }) => {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, errors } = useForm({
     validationSchema: schema,
     mode: 'onBlur',
   });
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    // updateTeam(editedTeam.id, { ...data });
+  // this (1) should be the logged in user id
+  const loggedInUser = users.find((user) => user.id === 1);
+
+  const onSubmit = async (user) => {
+    const updatedUser = { ...loggedInUser, ...user };
+    editUser(loggedInUser.id, updatedUser);
     setOpen(false);
   };
 
@@ -88,7 +90,7 @@ const EditProfileForm = () => {
                   fullWidth
                   id="firstName"
                   label="First Name"
-                  defaultValue="Amr"
+                  defaultValue={loggedInUser.firstName}
                   error={!!errors.firstName}
                   helperText={errors.firstName?.message}
                   inputRef={register}
@@ -101,7 +103,7 @@ const EditProfileForm = () => {
                   id="lastName"
                   label="Last Name"
                   name="lastName"
-                  defaultValue="Ouf"
+                  defaultValue={loggedInUser.lastName}
                   error={!!errors.lastName}
                   helperText={errors.lastName?.message}
                   inputRef={register}
@@ -114,7 +116,7 @@ const EditProfileForm = () => {
                   id="email"
                   label="Email Address"
                   name="email"
-                  defaultValue="amr.ouf@yahoo.com"
+                  defaultValue={loggedInUser.email}
                   error={!!errors.email}
                   helperText={errors.email?.message}
                   inputRef={register}
@@ -145,4 +147,16 @@ const EditProfileForm = () => {
   );
 };
 
-export default EditProfileForm;
+const mapStateToProps = (state) => {
+  return {
+    users: state.users,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    editUser: (id, user) => dispatch(editUser(id, user)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfileForm);

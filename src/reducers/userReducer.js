@@ -1,4 +1,5 @@
 // Dummy data - default is an empty array
+// Assume id: 1 is logged in
 const userDefaultState = [
   {
     id: 1,
@@ -6,8 +7,8 @@ const userDefaultState = [
     lastName: 'Ouf',
     email: 'amr.ouf@yahoo.com',
     password: '123456',
-    following: [1, 2, 5, 7, 8],
-    followers: 100,
+    following: [3],
+    followers: 0,
   },
   {
     id: 2,
@@ -15,8 +16,8 @@ const userDefaultState = [
     lastName: 'Sherif',
     email: 'momen.sherif@yahoo.com',
     password: '123456',
-    following: [1, 2],
-    followers: 10,
+    following: [],
+    followers: 0,
   },
   {
     id: 3,
@@ -32,11 +33,12 @@ const userDefaultState = [
 const userReducer = (state = userDefaultState, action) => {
   switch (action.type) {
     case 'ADD_USER':
-      console.log('user reducer');
+      // make sure this works properly!
       return state.concat(action.user);
     case 'EDIT_USER':
-      // get the user and edit it
-      return state;
+      return state.map((user) =>
+        user.id !== action.id ? user : { ...user, ...action.user }
+      );
     case 'ADD_FOLLOWING':
       // get the user and concat on following
       return state;

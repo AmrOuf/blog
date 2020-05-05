@@ -1,26 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import MoreIcon from '@material-ui/icons/More';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+
+import { deleteBlog } from '../../actions/blogs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,12 +42,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BlogCard = () => {
+const BlogCard = ({ blog, deleteBlog }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -62,13 +57,12 @@ const BlogCard = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleDelete = () => {
+    deleteBlog(blog);
   };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -93,7 +87,7 @@ const BlogCard = () => {
         </IconButton>
         <p>Edit</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={handleDelete}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -112,7 +106,7 @@ const BlogCard = () => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+            {blog.author}
           </Avatar>
         }
         action={
@@ -125,14 +119,12 @@ const BlogCard = () => {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
+        title={blog.title}
         subheader="September 14, 2016"
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {blog.body}
         </Typography>
       </CardContent>
       <CardMedia
@@ -145,4 +137,10 @@ const BlogCard = () => {
   );
 };
 
-export default BlogCard;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteBlog: (blog) => dispatch(deleteBlog(blog)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(BlogCard);
