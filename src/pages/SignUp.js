@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -64,9 +65,9 @@ const SignUp = ({ history, addUser }) => {
   });
 
   const onSubmit = async (user) => {
-    console.log(user);
-    addUser({ id: Math.random(), ...user, following: [], followers: 0 });
-    history.replace('/');
+    const savedUser = await addUser(user);
+    console.log(savedUser);
+    // history.replace('/');
   };
 
   return (

@@ -14,7 +14,7 @@ const BlogFeed = ({ blogs }) => {
   // const classes = useStyles();
 
   const blogList = blogs.map((blog) => {
-    return <BlogCard key={blog.id} blog={blog}></BlogCard>;
+    return <BlogCard key={blog._id} blog={blog}></BlogCard>;
   });
 
   return <Fragment>{blogList}</Fragment>;

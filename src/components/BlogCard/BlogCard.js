@@ -106,7 +106,7 @@ const BlogCard = ({ blog, deleteBlog }) => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            {blog.author}
+            {blog.author.firstName[0]}
           </Avatar>
         }
         action={

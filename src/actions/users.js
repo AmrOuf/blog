@@ -1,7 +1,14 @@
-const addUser = (user) => ({
-  type: 'ADD_USER',
-  user: user,
-});
+import axios from 'axios';
+
+const addUser = (user) => {
+  return async () => {
+    const { data } = await axios.post(
+      'http://localhost:3000/users/register',
+      user
+    );
+    return data;
+  };
+};
 
 const editUser = (id, user) => ({
   type: 'EDIT_USER',
