@@ -1,13 +1,24 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Homepage from './pages/Homepage';
 import Profile from './pages/Profile';
 import SearchResults from './pages/SearchResults';
+import { setLoggedInUser } from './actions/users';
 
-function App() {
+const App = ({ setLoggedInUser, loggedIn }) => {
+  useEffect(() => {
+    (async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        await setLoggedInUser(user);
+      }
+    })();
+  }, []);
+
   return (
     <Fragment>
       <Switch>
@@ -19,6 +30,18 @@ function App() {
       </Switch>
     </Fragment>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoggedInUser: (user) => dispatch(setLoggedInUser(user)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

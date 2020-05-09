@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Navbar from '../components/Navbar/Navbar';
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
 import ProfileBody from '../components/ProfileBody/ProfileBody';
+import { fetchUser } from '../actions/users';
 
 const useStyles = makeStyles((theme) => ({
   pt: {
@@ -18,13 +19,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = ({ users, match, history }) => {
+const Profile = async ({ users, loggedIn, fetchUser, match, history }) => {
   const classes = useStyles();
   const id = match.params.id;
 
   // this (1) should be the logged in user id
-  const loggedInUser = users.find((user) => user.id === 1);
-  const viewedUser = users.find((user) => user.id === +id);
+  const loggedInUser = loggedIn;
+  let viewedUser = null;
+  if (loggedIn.token) {
+    // fetch viewedUser
+    viewedUser = await fetchUser(id);
+    console.log(viewedUser);
+  }
 
   return (
     <Fragment>
@@ -33,13 +39,13 @@ const Profile = ({ users, match, history }) => {
         <Grid container spacing={3}>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
-            <ProfileHeader
+            {/* <ProfileHeader
               viewedId={match.params.id}
               viewedUser={viewedUser}
               loggedInUser={loggedInUser}
-            ></ProfileHeader>
+            ></ProfileHeader> */}
             <Divider className={classes.mt} variant="middle" />
-            <ProfileBody></ProfileBody>
+            {/* <ProfileBody></ProfileBody> */}
           </Grid>
         </Grid>
       </Container>
@@ -51,7 +57,12 @@ const mapStateToProps = (state) => {
   return {
     users: state.users,
     blogs: state.blogs,
+    loggedIn: state.loggedIn,
   };
 };
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = (dispatch) => ({
+  fetchUser: (id) => dispatch(fetchUser(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

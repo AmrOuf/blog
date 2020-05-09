@@ -1,34 +1,4 @@
-// Dummy data - default is an empty array
-// Assume id: 1 is logged in
-const userDefaultState = [
-  {
-    id: 1,
-    firstName: 'Amr',
-    lastName: 'Ouf',
-    email: 'amr.ouf@yahoo.com',
-    password: '123456',
-    following: [3],
-    followers: 0,
-  },
-  {
-    id: 2,
-    firstName: 'Momen',
-    lastName: 'Sherif',
-    email: 'momen.sherif@yahoo.com',
-    password: '123456',
-    following: [],
-    followers: 0,
-  },
-  {
-    id: 3,
-    firstName: 'Mennatullah',
-    lastName: 'Sayed',
-    email: 'menna.sayed@yahoo.com',
-    password: '123456',
-    following: [2, 4, 6, 8, 10, 12, 14],
-    followers: 200,
-  },
-];
+const userDefaultState = {};
 
 const userReducer = (state = userDefaultState, action) => {
   switch (action.type) {

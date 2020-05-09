@@ -1,16 +1,9 @@
-// default is an empty object or null
-const loggedInDefaultState = {
-  id: 1,
-  firstName: 'Amr',
-  lastName: 'Ouf',
-  email: 'amr.ouf@yahoo.com',
-  password: '123456',
-  following: [3],
-  followers: 0,
-};
+const loggedInDefaultState = {};
 
 const loggedInReducer = (state = loggedInDefaultState, action) => {
   switch (action.type) {
+    case 'SET_LOGGEDIN_USER':
+      return { ...action.data.user, token: action.data.token };
     default:
       return state;
   }

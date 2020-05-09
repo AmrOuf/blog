@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ search, setFilter, history }) => {
+const Navbar = ({ search, setFilter, history, loggedIn }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -151,6 +151,62 @@ const Navbar = ({ search, setFilter, history }) => {
     </Menu>
   );
 
+  const searchComponent = (
+    <Fragment>
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <SearchIcon />
+        </div>
+        <InputBase
+          placeholder={placeholder}
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{ 'aria-label': 'search' }}
+          onChange={(e) => handleSearch(e.target.value)}
+          onKeyPress={(e) => handleSubmitSearch(e)}
+        />
+      </div>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.mr}
+        onClick={() => handleChangeFilter(0)}
+      >
+        all
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.mr}
+        onClick={() => handleChangeFilter(1)}
+      >
+        users
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.mr}
+        onClick={() => handleChangeFilter(2)}
+      >
+        title
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.mr}
+        onClick={() => handleChangeFilter(3)}
+      >
+        tags
+      </Button>
+    </Fragment>
+  );
+
+  const renderSearch = JSON.parse(localStorage.getItem('user'))
+    ? searchComponent
+    : null;
+
   const handleChangeFilter = (filter) => {
     // setFilter(filter);
     search.activeFilter = filter;
@@ -191,53 +247,7 @@ const Navbar = ({ search, setFilter, history }) => {
           <Typography className={classes.title} variant="h6" noWrap>
             BLOG
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder={placeholder}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => handleSearch(e.target.value)}
-              onKeyPress={(e) => handleSubmitSearch(e)}
-            />
-          </div>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.mr}
-            onClick={() => handleChangeFilter(0)}
-          >
-            all
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.mr}
-            onClick={() => handleChangeFilter(1)}
-          >
-            users
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.mr}
-            onClick={() => handleChangeFilter(2)}
-          >
-            title
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.mr}
-            onClick={() => handleChangeFilter(3)}
-          >
-            tags
-          </Button>
+          {renderSearch}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton
@@ -273,6 +283,7 @@ const Navbar = ({ search, setFilter, history }) => {
 const mapStateToProps = (state) => {
   return {
     search: state.search,
+    loggedIn: state.loggedIn,
   };
 };
 

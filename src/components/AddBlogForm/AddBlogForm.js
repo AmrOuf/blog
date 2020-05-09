@@ -62,54 +62,52 @@ const AddBlogForm = ({ loggedIn, addBlog }) => {
     addBlog(newBlog);
   };
 
-  return (
-    <div className={classes.paper}>
-      <form
-        className={classes.form}
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              name="title"
-              variant="outlined"
-              fullWidth
-              id="title"
-              label="Blog title"
-              error={!!errors.title}
-              helperText={errors.title?.message}
-              inputRef={register}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="body"
-              variant="outlined"
-              fullWidth
-              id="body"
-              label="Create a blog"
-              multiline
-              rows={4}
-              error={!!errors.body}
-              helperText={errors.body?.message}
-              inputRef={register}
-            />
-          </Grid>
+  const renderBlogForm = (
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <TextField
+            name="title"
+            variant="outlined"
+            fullWidth
+            id="title"
+            label="Blog title"
+            error={!!errors.title}
+            helperText={errors.title?.message}
+            inputRef={register}
+          />
         </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          disabled={formState.isSubmitting}
-        >
-          Post
-        </Button>
-      </form>
-    </div>
+        <Grid item xs={12}>
+          <TextField
+            name="body"
+            variant="outlined"
+            fullWidth
+            id="body"
+            label="Create a blog"
+            multiline
+            rows={4}
+            error={!!errors.body}
+            helperText={errors.body?.message}
+            inputRef={register}
+          />
+        </Grid>
+      </Grid>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={classes.submit}
+        disabled={formState.isSubmitting}
+      >
+        Post
+      </Button>
+    </form>
   );
+
+  const blogForm = loggedIn.token ? renderBlogForm : null;
+
+  return <div className={classes.paper}>{blogForm}</div>;
 };
 
 const mapStateToProps = (state) => {

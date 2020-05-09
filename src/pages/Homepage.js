@@ -9,14 +9,13 @@ import BlogFeed from '../components/BlogFeed/BlogFeed';
 import AddBlogForm from '../components/AddBlogForm/AddBlogForm';
 import { fetchBlogs } from '../actions/blogs';
 
-const Homepage = ({ history, fetchBlogs, blogs }) => {
+const Homepage = ({ history, fetchBlogs }) => {
   useEffect(() => {
     (async () => {
       await fetchBlogs();
-      // console.log(blogs);
     })();
   }, []);
-  // console.log(blogs);
+
   return (
     <Fragment>
       <Navbar history={history}></Navbar>

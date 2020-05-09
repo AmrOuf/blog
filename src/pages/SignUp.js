@@ -67,7 +67,7 @@ const SignUp = ({ history, addUser }) => {
   const onSubmit = async (user) => {
     const savedUser = await addUser(user);
     console.log(savedUser);
-    // history.replace('/');
+    history.replace('/sign-in');
   };
 
   return (

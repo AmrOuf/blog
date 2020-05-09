@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { string, object } from 'yup';
+import { connect } from 'react-redux';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -8,9 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-
-import { useForm } from 'react-hook-form';
-import { string, object } from 'yup';
+import { logInUser } from '../actions/users';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -52,7 +53,7 @@ const schema = object().shape({
     .required('Password is required!'),
 });
 
-const SignIn = ({ history }) => {
+const SignIn = ({ history, logInUser, loggedIn }) => {
   const classes = useStyles();
 
   const { register, handleSubmit, errors, formState } = useForm({
@@ -61,8 +62,9 @@ const SignIn = ({ history }) => {
   });
 
   const onSubmit = async (data) => {
-    // check if the user exists to log in
-    console.log(data);
+    const authenticatedUser = await logInUser(data);
+    localStorage.setItem('user', JSON.stringify(authenticatedUser));
+    // console.log(JSON.parse(localStorage.getItem('user')));
     history.replace('/');
   };
 
@@ -130,4 +132,16 @@ const SignIn = ({ history }) => {
   );
 };
 
-export default SignIn;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logInUser: (credentials) => dispatch(logInUser(credentials)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
