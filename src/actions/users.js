@@ -28,11 +28,17 @@ const logInUser = (credentials) => {
 
 const fetchUser = (id) => {
   return async (dispatch) => {
-    const { data } = await axios.get(`http://localhost:3000/users/${id}`);
+    console.log('calling backend..');
+    const data = await axios.get(`http://localhost:3000/users/${id}`);
     console.log(data);
     return data;
   };
 };
+
+const deleteBlogFromUser = (id) => ({
+  type: 'DELETE_BLOG',
+  id,
+});
 
 // may remove edit
 const editUser = (id, user) => ({
@@ -41,4 +47,11 @@ const editUser = (id, user) => ({
   user: user,
 });
 
-export { addUser, editUser, logInUser, setLoggedInUser, fetchUser };
+export {
+  addUser,
+  editUser,
+  logInUser,
+  setLoggedInUser,
+  fetchUser,
+  deleteBlogFromUser,
+};

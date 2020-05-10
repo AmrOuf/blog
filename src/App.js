@@ -9,15 +9,19 @@ import Profile from './pages/Profile';
 import SearchResults from './pages/SearchResults';
 import { setLoggedInUser } from './actions/users';
 
-const App = ({ setLoggedInUser, loggedIn }) => {
+const App = ({ setLoggedInUser, dispatch, loggedIn }) => {
   useEffect(() => {
     (async () => {
       const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
-        await setLoggedInUser(user);
+        setLoggedInUser(user);
       }
     })();
   }, []);
+
+  // useEffect(() => {
+  //   console.log(loggedIn);
+  // });
 
   return (
     <Fragment>

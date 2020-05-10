@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +18,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 import { deleteBlog } from '../../actions/blogs';
+import { deleteBlogFromUser } from '../../actions/users';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,10 +44,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BlogCard = ({ blog, deleteBlog }) => {
+const BlogCard = ({
+  blog,
+  loggedIn,
+  author,
+  deleteBlog,
+  deleteBlogFromUser,
+}) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [authorState, setAuthorState] = useState(author);
+  const [blogState, setBlogState] = useState(blog);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -61,8 +71,19 @@ const BlogCard = ({ blog, deleteBlog }) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleDelete = () => {
-    deleteBlog(blog);
+  const handleDelete = async () => {
+    // make an action to delete from state
+    deleteBlogFromUser(blog._id);
+    // shouldn't loggedIn state be updated by now?
+    localStorage.setItem('user', JSON.stringify(loggedIn));
+
+    const { data } = await axios.delete(
+      `http://localhost:3000/blogs/delete/${blog._id}`,
+      {
+        headers: { Authorization: loggedIn.token },
+      }
+    );
+    console.log(data);
   };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -106,7 +127,7 @@ const BlogCard = ({ blog, deleteBlog }) => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            {blog.author.firstName[0]}
+            {authorState.firstName[0]}
           </Avatar>
         }
         action={
@@ -119,12 +140,12 @@ const BlogCard = ({ blog, deleteBlog }) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={blog.title}
+        title={blogState.title}
         subheader="September 14, 2016"
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {blog.body}
+          {blogState.body}
         </Typography>
       </CardContent>
       <CardMedia
@@ -137,10 +158,17 @@ const BlogCard = ({ blog, deleteBlog }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    deleteBlog: (blog) => dispatch(deleteBlog(blog)),
+    loggedIn: state.loggedIn,
   };
 };
 
-export default connect(null, mapDispatchToProps)(BlogCard);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteBlog: (blog) => dispatch(deleteBlog(blog)),
+    deleteBlogFromUser: (id) => dispatch(deleteBlogFromUser(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogCard);

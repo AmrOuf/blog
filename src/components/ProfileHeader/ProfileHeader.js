@@ -67,7 +67,9 @@ const ProfileHeader = ({ viewedUser, loggedInUser, viewedId, editUser }) => {
 
   if (loggedInUser.id === viewedUser.id) {
     followBtn = null;
-    editProfileBtn = <EditProfileForm></EditProfileForm>;
+    editProfileBtn = (
+      <EditProfileForm loggedInUser={loggedInUser}></EditProfileForm>
+    );
   } else if (loggedInUser.following.includes(viewedUser.id)) {
     editProfileBtn = null;
     // already following
@@ -96,21 +98,26 @@ const ProfileHeader = ({ viewedUser, loggedInUser, viewedId, editUser }) => {
     );
   }
 
+  const following = viewedUser.user.following
+    ? viewedUser.user.following.length
+    : 0;
+  const blogCount = viewedUser.blogs ? viewedUser.blogs.length : 0;
+
   return (
     <Fragment>
       <Grid container className={classes.center}>
-        <Grid item xs={6} className={classes.mb}>
+        <Grid item xs={12} className={classes.mb}>
           <Typography variant="h4">
-            {viewedUser.firstName} {viewedUser.lastName}
+            {viewedUser.user.firstName} {viewedUser.user.lastName}
           </Typography>
         </Grid>
-        <Grid item xs={6} className={classes.mb}>
+        {/* <Grid item xs={6} className={classes.mb}>
           {editProfileBtn}
-        </Grid>
+        </Grid> */}
 
         <Grid item xs={4}>
           <Typography variant="h6" display="block">
-            8
+            {blogCount}
           </Typography>
           <Typography variant="subtitle2" display="block" gutterBottom>
             Posts
@@ -118,7 +125,7 @@ const ProfileHeader = ({ viewedUser, loggedInUser, viewedId, editUser }) => {
         </Grid>
         <Grid item xs={4}>
           <Typography variant="h6" display="block">
-            {viewedUser.followers}
+            {viewedUser.user.followers}
           </Typography>
           <Typography variant="subtitle2" display="block" gutterBottom>
             Followers
@@ -126,7 +133,7 @@ const ProfileHeader = ({ viewedUser, loggedInUser, viewedId, editUser }) => {
         </Grid>
         <Grid item xs={4}>
           <Typography variant="h6" display="block">
-            {viewedUser.following.length}
+            {following}
           </Typography>
           <Typography variant="subtitle2" display="block" gutterBottom>
             Following

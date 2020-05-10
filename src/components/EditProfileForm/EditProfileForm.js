@@ -39,7 +39,7 @@ const schema = object().shape({
     .required('Password is required!'),
 });
 
-const EditProfileForm = ({ users, editUser }) => {
+const EditProfileForm = ({ users, loggedInUser, editUser }) => {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, errors } = useForm({
     validationSchema: schema,
@@ -47,7 +47,7 @@ const EditProfileForm = ({ users, editUser }) => {
   });
 
   // this (1) should be the logged in user id
-  const loggedInUser = users.find((user) => user.id === 1);
+  // const loggedInUser = users.find((user) => user.id === 1);
 
   const onSubmit = async (user) => {
     const updatedUser = { ...loggedInUser, ...user };

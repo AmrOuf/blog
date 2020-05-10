@@ -23,4 +23,4 @@ const fetchBlogs = () => {
   };
 };
 
-export { addBlog, deleteBlog, fetchBlogs };
+export { addBlog, deleteBlog, fetchBlogs, setBlogs };
