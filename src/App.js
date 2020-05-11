@@ -7,12 +7,15 @@ import SignIn from './pages/SignIn';
 import Homepage from './pages/Homepage';
 import Profile from './pages/Profile';
 import SearchResults from './pages/SearchResults';
+import Following from './pages/Following';
 import { setLoggedInUser } from './actions/users';
+import { fetchBlogs } from './actions/blogs';
 
-const App = ({ setLoggedInUser, dispatch, loggedIn }) => {
+const App = ({ setLoggedInUser, dispatch, loggedIn, fetchBlogs }) => {
   useEffect(() => {
     (async () => {
       const user = JSON.parse(localStorage.getItem('user'));
+      await fetchBlogs();
       if (user) {
         setLoggedInUser(user);
       }
@@ -30,6 +33,7 @@ const App = ({ setLoggedInUser, dispatch, loggedIn }) => {
         <Route path="/sign-in" exact component={SignIn} />
         <Route path="/profile/:id" exact component={Profile} />
         <Route path="/results" exact component={SearchResults} />
+        <Route path="/following" exact component={Following} />
         <Route path="/" exact component={Homepage} />
       </Switch>
     </Fragment>
@@ -45,6 +49,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setLoggedInUser: (user) => dispatch(setLoggedInUser(user)),
+    fetchBlogs: (token) => dispatch(fetchBlogs(token)),
   };
 };
 

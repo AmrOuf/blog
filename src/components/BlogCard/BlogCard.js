@@ -73,17 +73,28 @@ const BlogCard = ({
 
   const handleDelete = async () => {
     // make an action to delete from state
-    deleteBlogFromUser(blog._id);
-    // shouldn't loggedIn state be updated by now?
-    localStorage.setItem('user', JSON.stringify(loggedIn));
 
-    const { data } = await axios.delete(
-      `http://localhost:3000/blogs/delete/${blog._id}`,
-      {
+    // console.log(loggedIn);
+    // shouldn't loggedIn state be updated by now?
+
+    axios
+      .delete(`http://localhost:3000/blogs/delete/${blog._id}`, {
         headers: { Authorization: loggedIn.token },
-      }
-    );
-    console.log(data);
+      })
+      .then(() => {
+        deleteBlogFromUser(blog._id);
+        const blogArray = loggedIn.blogs.filter(
+          (currentBlog) => currentBlog._id !== blog._id
+        );
+        const loggedInTmp = {
+          ...loggedIn,
+          token: loggedIn.token,
+          user: loggedIn.user,
+          blogs: blogArray,
+        };
+        console.log(loggedInTmp);
+        localStorage.setItem('user', JSON.stringify(loggedInTmp));
+      });
   };
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -122,6 +133,21 @@ const BlogCard = ({
     </Menu>
   );
 
+  let optionsMenu = null;
+
+  if (loggedIn.user && loggedIn.user._id === author._id) {
+    optionsMenu = (
+      <IconButton
+        aria-label="show more"
+        aria-controls={mobileMenuId}
+        aria-haspopup="true"
+        onClick={handleMobileMenuOpen}
+      >
+        <MoreVertIcon />
+      </IconButton>
+    );
+  }
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -130,16 +156,7 @@ const BlogCard = ({
             {authorState.firstName[0]}
           </Avatar>
         }
-        action={
-          <IconButton
-            aria-label="show more"
-            aria-controls={mobileMenuId}
-            aria-haspopup="true"
-            onClick={handleMobileMenuOpen}
-          >
-            <MoreVertIcon />
-          </IconButton>
-        }
+        action={optionsMenu}
         title={blogState.title}
         subheader="September 14, 2016"
       />

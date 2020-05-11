@@ -17,10 +17,24 @@ const setBlogs = (blogs) => ({
 
 const fetchBlogs = () => {
   return async (dispatch) => {
+    // const blogs = await axios.get('http://localhost:3000/blogs', {
+    //   headers: { Authorization: token },
+    // });
     const blogs = await axios.get('http://localhost:3000/blogs');
-    // console.log(blogs.data);
     dispatch(setBlogs(blogs.data));
+    return blogs.data;
   };
 };
 
-export { addBlog, deleteBlog, fetchBlogs, setBlogs };
+const fetchFollowingBlogs = (token) => {
+  return async (dispatch) => {
+    const blogs = await axios.get('http://localhost:3000/blogs/following', {
+      headers: { Authorization: token },
+    });
+    // console.log(blogs.data);
+    dispatch(setBlogs(blogs.data));
+    return blogs.data;
+  };
+};
+
+export { addBlog, deleteBlog, fetchBlogs, fetchFollowingBlogs, setBlogs };

@@ -7,8 +7,19 @@ const loggedInReducer = (state = loggedInDefaultState, action) => {
     case 'DELETE_BLOG':
       // console.log('about to delete from reducer...');
       const blogArray = state.blogs.filter((blog) => blog._id !== action.id);
-      // console.log({ token: state.token, user: state.user, blogs: blogArray });
-      return { token: state.token, user: state.user, blogs: blogArray };
+      console.log(blogArray);
+      console.log({
+        ...state,
+        token: state.token,
+        user: state.user,
+        blogs: blogArray,
+      });
+      return {
+        ...state,
+        token: state.token,
+        user: state.user,
+        blogs: blogArray,
+      };
     default:
       return state;
   }

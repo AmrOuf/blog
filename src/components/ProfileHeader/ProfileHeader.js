@@ -23,7 +23,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProfileHeader = ({ viewedUser, loggedInUser, viewedId, editUser }) => {
+const ProfileHeader = ({
+  viewedUser,
+  loggedInUser,
+  loggedIn,
+  viewedId,
+  editUser,
+}) => {
   const classes = useStyles();
   let followBtn = null;
   let editProfileBtn = null;
@@ -65,12 +71,12 @@ const ProfileHeader = ({ viewedUser, loggedInUser, viewedId, editUser }) => {
     );
   };
 
-  if (loggedInUser.id === viewedUser.id) {
+  if (loggedInUser && loggedInUser.id === viewedUser.id) {
     followBtn = null;
     editProfileBtn = (
       <EditProfileForm loggedInUser={loggedInUser}></EditProfileForm>
     );
-  } else if (loggedInUser.following.includes(viewedUser.id)) {
+  } else if (loggedInUser && loggedInUser.following.includes(viewedUser.id)) {
     editProfileBtn = null;
     // already following
     followBtn = (
@@ -101,7 +107,14 @@ const ProfileHeader = ({ viewedUser, loggedInUser, viewedId, editUser }) => {
   const following = viewedUser.user.following
     ? viewedUser.user.following.length
     : 0;
-  const blogCount = viewedUser.blogs ? viewedUser.blogs.length : 0;
+
+  let blogCount = 0;
+  // console.log(loggedIn);
+  if (loggedIn.user && loggedIn.user._id === viewedUser.user._id) {
+    blogCount = loggedIn.blogs.length;
+  } else {
+    blogCount = viewedUser.blogs ? viewedUser.blogs.length : 0;
+  }
 
   return (
     <Fragment>
@@ -151,6 +164,7 @@ const mapStateToProps = (state) => {
   return {
     users: state.users,
     blogs: state.blogs,
+    loggedIn: state.loggedIn,
   };
 };
 

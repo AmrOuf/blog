@@ -64,7 +64,8 @@ const SignIn = ({ history, logInUser, loggedIn }) => {
   const onSubmit = async (data) => {
     const authenticatedUser = await logInUser(data);
     localStorage.setItem('user', JSON.stringify(authenticatedUser));
-    history.replace(`/profile/${authenticatedUser.user._id}`);
+    // history.replace(`/profile/${authenticatedUser.user._id}`);
+    history.replace(`/`);
   };
 
   return (

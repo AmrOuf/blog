@@ -41,13 +41,17 @@ const Profile = ({
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(`http://localhost:3000/users/${id}`, {
-        headers: { Authorization: loggedInUser.token },
-      });
-      setViewedUser(data);
-      // setBlogs(viewedUser.blogs);
+      if (loggedInUser) {
+        const { data } = await axios.get(`http://localhost:3000/users/${id}`, {
+          headers: { Authorization: loggedInUser.token },
+        });
+        setViewedUser(data);
+        // setBlogs(viewedUser.blogs);
+      }
     })();
   }, []);
+
+  // console.log(viewedUser);
 
   // console.log(blogs);
 

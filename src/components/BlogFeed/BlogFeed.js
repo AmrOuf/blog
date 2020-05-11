@@ -10,11 +10,15 @@ import BlogCard from '../BlogCard/BlogCard';
 //   },
 // }));
 
-const BlogFeed = ({ blogs }) => {
+const BlogFeed = ({ loggedIn, blogs }) => {
   // const classes = useStyles();
 
+  // console.log(blogs);
+
   const blogList = blogs.map((blog) => {
-    return <BlogCard key={blog._id} blog={blog}></BlogCard>;
+    return (
+      <BlogCard key={blog._id} blog={blog} author={blog.author}></BlogCard>
+    );
   });
 
   return <Fragment>{blogList}</Fragment>;
@@ -23,6 +27,7 @@ const BlogFeed = ({ blogs }) => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
+    loggedIn: state.loggedIn,
   };
 };
 

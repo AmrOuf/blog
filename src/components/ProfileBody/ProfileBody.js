@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   // console.log(viewedUser.blogs);
   // useEffect(() => {
@@ -34,6 +34,17 @@ const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn }) => {
             key={blog._id}
             blog={blog}
             author={loggedIn.user}
+          ></BlogCard>
+        );
+      });
+    } else {
+      // this should mean it's not my profile
+      blogList = viewedUser.blogs.map((blog) => {
+        return (
+          <BlogCard
+            key={blog._id}
+            blog={blog}
+            author={viewedUser.user}
           ></BlogCard>
         );
       });
