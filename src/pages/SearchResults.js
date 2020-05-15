@@ -1,32 +1,61 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Navbar from '../components/Navbar/Navbar';
 import BlogCard from '../components/BlogCard/BlogCard';
+import { fetchUsers } from '../actions/search';
+import { fetchBlogsByTitle } from '../actions/search';
+import { fetchBlogsByTags } from '../actions/search';
 
-const SearchResults = ({ users, blogs, search, history }) => {
-  let searchResults;
+const SearchResults = ({
+  blogs,
+  search,
+  history,
+  fetchUsers,
+  fetchBlogsByTitle,
+  fetchBlogsByTags,
+}) => {
+  const [searchResults, setSearchResults] = useState(null);
+  let users = null;
+  let fetchedBlogs = null;
 
-  const blogList = blogs.map((blog) => {
-    return <BlogCard key={blog.id} blog={blog}></BlogCard>;
-  });
-
-  const userList = users.map((user) => {
-    return <h1 key={user.id}>{user.firstName}</h1>;
-  });
-
-  switch (search.activeFilter) {
-    case 0:
-    case 1:
-      searchResults = userList;
-      break;
-    case 2:
-    case 3:
-      searchResults = blogList;
-      break;
-    default:
-      searchResults = userList;
-  }
+  useEffect(() => {
+    (async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      // console.log(search);
+      if (search.activeFilter === 2) {
+        fetchedBlogs = await fetchBlogsByTitle(user.token, search.searchQuery);
+        const blogList = fetchedBlogs.map((blog) => {
+          return (
+            <BlogCard
+              key={blog._id}
+              blog={blog}
+              author={blog.author}
+            ></BlogCard>
+          );
+        });
+        setSearchResults(blogList);
+      } else if (search.activeFilter === 3) {
+        fetchedBlogs = await fetchBlogsByTags(user.token, search.searchQuery);
+        const blogList = fetchedBlogs.map((blog) => {
+          return (
+            <BlogCard
+              key={blog._id}
+              blog={blog}
+              author={blog.author}
+            ></BlogCard>
+          );
+        });
+        setSearchResults(blogList);
+      } else {
+        users = await fetchUsers(user.token, search.searchQuery);
+        const userList = users.map((user) => {
+          return <h1 key={user._id}>{user.firstName}</h1>;
+        });
+        setSearchResults(userList);
+      }
+    })();
+  }, []);
 
   return (
     <Fragment>
@@ -44,4 +73,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SearchResults);
+const mapDispatchToProps = (dispatch) => ({
+  fetchUsers: (token, query) => dispatch(fetchUsers(token, query)),
+  fetchBlogsByTitle: (token, query) =>
+    dispatch(fetchBlogsByTitle(token, query)),
+  fetchBlogsByTags: (token, query) => dispatch(fetchBlogsByTags(token, query)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);

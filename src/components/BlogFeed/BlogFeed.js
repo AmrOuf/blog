@@ -1,8 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 // import { makeStyles } from '@material-ui/core/styles';
+import Pagination from '@material-ui/lab/Pagination';
 
 import BlogCard from '../BlogCard/BlogCard';
+import { fetchBlogs } from '../../actions/blogs';
 
 // const useStyles = makeStyles((theme) => ({
 //   center: {
@@ -10,10 +12,17 @@ import BlogCard from '../BlogCard/BlogCard';
 //   },
 // }));
 
-const BlogFeed = ({ loggedIn, blogs }) => {
+const BlogFeed = ({
+  loggedIn,
+  blogs,
+  pageNumber,
+  pageSize,
+  history,
+  fetchBlogs,
+}) => {
   // const classes = useStyles();
 
-  // console.log(blogs);
+  const [page, setPage] = useState(pageNumber);
 
   const blogList = blogs.map((blog) => {
     return (
@@ -21,7 +30,23 @@ const BlogFeed = ({ loggedIn, blogs }) => {
     );
   });
 
-  return <Fragment>{blogList}</Fragment>;
+  const handleChange = async (event, value) => {
+    setPage(value);
+    history.replace(`/${value}`);
+    await fetchBlogs(value - 1, pageSize);
+  };
+
+  return (
+    <Fragment>
+      {blogList}
+      <Pagination
+        count={2}
+        color="primary"
+        page={page}
+        onChange={handleChange}
+      />
+    </Fragment>
+  );
 };
 
 const mapStateToProps = (state) => {
@@ -31,4 +56,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(BlogFeed);
+const mapDispatchToProps = (dispatch) => ({
+  fetchBlogs: (pageNumber, pageSize) =>
+    dispatch(fetchBlogs(pageNumber, pageSize)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlogFeed);

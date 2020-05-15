@@ -12,6 +12,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Chip from '@material-ui/core/Chip';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -24,6 +26,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
+  },
+  paper: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    listStyle: 'none',
+    padding: theme.spacing(0.5),
+    margin: 0,
   },
   media: {
     height: 0,
@@ -42,6 +52,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  chip: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const BlogCard = ({
@@ -56,6 +71,7 @@ const BlogCard = ({
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [authorState, setAuthorState] = useState(author);
   const [blogState, setBlogState] = useState(blog);
+  const [chipData, setChipData] = React.useState([...blog.tags]);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -148,6 +164,18 @@ const BlogCard = ({
     );
   }
 
+  const tagList = chipData.map((data) => {
+    return (
+      <Chip
+        key={data}
+        label={data.toLowerCase()}
+        color="primary"
+        clickable
+        className={classes.chip}
+      />
+    );
+  });
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -170,6 +198,8 @@ const BlogCard = ({
         image="/images/paella.jpg"
         title="Paella dish"
       />
+      {tagList}
+
       {renderMobileMenu}
     </Card>
   );

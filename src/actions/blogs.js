@@ -15,12 +15,15 @@ const setBlogs = (blogs) => ({
   blogs,
 });
 
-const fetchBlogs = () => {
+const fetchBlogs = (pageNumber, pageSize) => {
   return async (dispatch) => {
     // const blogs = await axios.get('http://localhost:3000/blogs', {
     //   headers: { Authorization: token },
     // });
-    const blogs = await axios.get('http://localhost:3000/blogs');
+    const blogs = await axios.post('http://localhost:3000/blogs', {
+      pageNumber,
+      pageSize,
+    });
     dispatch(setBlogs(blogs.data));
     return blogs.data;
   };

@@ -6,6 +6,7 @@ import { string, object } from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
 
 import { useForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,10 +38,14 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
+  chip: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const AddBlogForm = ({ loggedIn, addBlog }) => {
   const classes = useStyles();
+  const [chipData, setChipData] = React.useState([]);
 
   const schema = object().shape({
     title: string().required('Blog title is required!'),
@@ -56,11 +61,35 @@ const AddBlogForm = ({ loggedIn, addBlog }) => {
     const newBlog = {
       ...blog,
       author: loggedIn.id,
-      id: Math.round(Math.random() * 1000),
       tags: [],
     };
-    addBlog(newBlog);
+    // addBlog(newBlog);
+    // back to home page - make sure the new blog is added! or else stall him
   };
+
+  const handleDelete = (chipToDelete) => () => {
+    setChipData((chips) => chips.filter((chip) => chip !== chipToDelete));
+  };
+
+  const handleAddTag = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setChipData([...chipData, e.target.value.toLowerCase()]);
+      e.target.value = '';
+    }
+  };
+
+  const tagList = chipData.map((data) => {
+    return (
+      <Chip
+        key={data}
+        label={data.toLowerCase()}
+        color="primary"
+        onDelete={handleDelete(data)}
+        className={classes.chip}
+      />
+    );
+  });
 
   const renderBlogForm = (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -85,11 +114,25 @@ const AddBlogForm = ({ loggedIn, addBlog }) => {
             id="body"
             label="Create a blog"
             multiline
-            rows={4}
+            rows={8}
             error={!!errors.body}
             helperText={errors.body?.message}
             inputRef={register}
           />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            name="tags"
+            variant="outlined"
+            fullWidth
+            id="tags"
+            label="Add some tags!"
+            inputRef={register}
+            onKeyPress={(e) => handleAddTag(e)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          {tagList}
         </Grid>
       </Grid>
       <Button
@@ -100,7 +143,7 @@ const AddBlogForm = ({ loggedIn, addBlog }) => {
         className={classes.submit}
         disabled={formState.isSubmitting}
       >
-        Post
+        Add
       </Button>
     </form>
   );
