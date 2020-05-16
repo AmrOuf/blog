@@ -32,13 +32,13 @@ const ProfileHeader = ({
 }) => {
   const classes = useStyles();
   let followBtn = null;
-  let editProfileBtn = null;
 
   const handleFollow = () => {
-    loggedInUser.following.push(viewedUser.id);
-    viewedUser.followers++;
-    editUser(loggedInUser.id, loggedInUser);
-    editUser(viewedUser.id, viewedUser);
+    loggedIn.user.following.push(viewedUser.user._id);
+    viewedUser.user.followers++;
+    // do the edit in the backend di 7aga zeft
+    editUser(loggedIn.user._id, loggedIn.user);
+    editUser(viewedUser.user._id, viewedUser.user);
 
     followBtn = (
       <Button
@@ -71,13 +71,14 @@ const ProfileHeader = ({
     );
   };
 
-  if (loggedInUser && loggedInUser.id === viewedUser.id) {
+  console.log(viewedUser);
+
+  if (loggedIn.user && loggedIn.user._id === viewedUser.user._id) {
     followBtn = null;
-    editProfileBtn = (
-      <EditProfileForm loggedInUser={loggedInUser}></EditProfileForm>
-    );
-  } else if (loggedInUser && loggedInUser.following.includes(viewedUser.id)) {
-    editProfileBtn = null;
+  } else if (
+    loggedIn.user &&
+    loggedIn.user.following.includes(viewedUser.user._id)
+  ) {
     // already following
     followBtn = (
       <Button
@@ -90,7 +91,6 @@ const ProfileHeader = ({
       </Button>
     );
   } else {
-    editProfileBtn = null;
     // not following
     followBtn = (
       <Button
@@ -124,9 +124,6 @@ const ProfileHeader = ({
             {viewedUser.user.firstName} {viewedUser.user.lastName}
           </Typography>
         </Grid>
-        {/* <Grid item xs={6} className={classes.mb}>
-          {editProfileBtn}
-        </Grid> */}
 
         <Grid item xs={4}>
           <Typography variant="h6" display="block">

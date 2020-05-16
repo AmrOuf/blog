@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import SearchResults from './pages/SearchResults';
 import Following from './pages/Following';
 import AddBlog from './pages/AddBlog';
+import EditBlog from './pages/EditBlog';
 import { setLoggedInUser } from './actions/users';
 import { fetchBlogs } from './actions/blogs';
 
@@ -36,6 +37,7 @@ const App = ({ setLoggedInUser, dispatch, loggedIn, fetchBlogs }) => {
         <Route path="/results" exact component={SearchResults} />
         <Route path="/following" exact component={Following} />
         <Route path="/add-blog" exact component={AddBlog} />
+        <Route path="/edit-blog/:blogId" exact component={EditBlog} />
         <Route path="/:pageNumber" exact component={Homepage} />
         <Route path="/" exact component={Homepage} />
       </Switch>

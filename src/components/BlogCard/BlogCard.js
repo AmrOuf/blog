@@ -63,6 +63,7 @@ const BlogCard = ({
   blog,
   loggedIn,
   author,
+  history,
   deleteBlog,
   deleteBlogFromUser,
 }) => {
@@ -75,16 +76,17 @@ const BlogCard = ({
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleEdit = async () => {
+    // console.log(blog._id);
+    history.replace(`/edit-blog/${blog._id}`);
   };
 
   const handleDelete = async () => {
@@ -124,7 +126,7 @@ const BlogCard = ({
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={handleEdit}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { string, object } from 'yup';
@@ -10,7 +10,8 @@ import Chip from '@material-ui/core/Chip';
 
 import { useForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core/styles';
-import { addBlog } from '../../actions/blogs';
+import { editBlog } from '../../actions/blogs';
+import { fetchBlogById } from '../../actions/blogs';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,9 +44,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddBlogForm = ({ loggedIn, addBlog, history }) => {
+const EditBlogForm = ({
+  loggedIn,
+  addBlog,
+  editBlog,
+  history,
+  blogId,
+  fetchBlogById,
+}) => {
   const classes = useStyles();
-  const [chipData, setChipData] = React.useState([]);
+  const [chipData, setChipData] = useState([]);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      const blog = await fetchBlogById(blogId, loggedIn.token);
+      setTitle(blog.title);
+      setBody(blog.body);
+      setChipData(blog.tags);
+    })();
+  }, []);
 
   const schema = object().shape({
     title: string().required('Blog title is required!'),
@@ -63,7 +82,7 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
       tags: [...chipData],
     };
 
-    addBlog(newBlog, loggedIn.token);
+    editBlog(blogId, newBlog, loggedIn.token);
     history.replace('/');
   };
 
@@ -91,6 +110,14 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
     );
   });
 
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleBodyChange = (e) => {
+    setBody(e.target.value);
+  };
+
   const renderBlogForm = (
     <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
       <Grid container spacing={2}>
@@ -101,6 +128,8 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
             fullWidth
             id="title"
             label="Blog title"
+            value={title}
+            onInput={handleTitleChange}
             error={!!errors.title}
             helperText={errors.title?.message}
             inputRef={register}
@@ -112,7 +141,9 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
             variant="outlined"
             fullWidth
             id="body"
-            label="Create a blog"
+            label="Your new blog"
+            value={body}
+            onInput={handleBodyChange}
             multiline
             rows={8}
             error={!!errors.body}
@@ -126,7 +157,7 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
             variant="outlined"
             fullWidth
             id="tags"
-            label="Add some tags!"
+            label="Your tags!"
             inputRef={register}
             onKeyPress={(e) => handleAddTag(e)}
           />
@@ -143,7 +174,7 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
         className={classes.submit}
         disabled={formState.isSubmitting}
       >
-        Add
+        Save
       </Button>
     </form>
   );
@@ -161,8 +192,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addBlog: (blog, token) => dispatch(addBlog(blog, token)),
+    fetchBlogById: (id, token) => dispatch(fetchBlogById(id, token)),
+    editBlog: (id, blog, token) => dispatch(editBlog(id, blog, token)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddBlogForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EditBlogForm);

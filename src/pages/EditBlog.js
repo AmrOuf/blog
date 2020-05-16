@@ -7,21 +7,22 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
 import Navbar from '../components/Navbar/Navbar';
-import AddBlogForm from '../components/AddBlogForm/AddBlogForm';
+import EditBlogForm from '../components/EditBlogForm/EditBlogForm';
 
 const useStyles = makeStyles((theme) => ({}));
 
-const AddBlog = ({ history }) => {
+const EditBlog = ({ history, match }) => {
   const classes = useStyles();
+  const blogId = match.params.blogId;
 
   return (
     <Fragment>
       <Navbar history={history}></Navbar>
       <Container>
-        <AddBlogForm history={history}></AddBlogForm>
+        <EditBlogForm history={history} blogId={blogId}></EditBlogForm>
       </Container>
     </Fragment>
   );
 };
 
-export default AddBlog;
+export default EditBlog;

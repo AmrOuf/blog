@@ -34,15 +34,6 @@ const Navbar = ({ search, setFilter, history, loggedIn }) => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
   const menuId = 'primary-search-account-menu';
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -160,6 +151,18 @@ const Navbar = ({ search, setFilter, history, loggedIn }) => {
     }
   };
 
+  const handleProfileClick = () => {
+    // if (loggedIn.user) {
+    //   history.replace(`/profile/${loggedIn.user._id}`);
+    // } else {
+    //   history.replace('/sign-in');
+    // }
+  };
+
+  const profileLink = loggedIn.user
+    ? `/profile/${loggedIn.user._id}`
+    : '/sign-in';
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -172,33 +175,21 @@ const Navbar = ({ search, setFilter, history, loggedIn }) => {
           {renderSearch}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Link to="/sign-in" className={classes.link}>
+            <Link to={profileLink} className={classes.link}>
               <IconButton
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+                onClick={handleProfileClick}
                 color="inherit"
               >
                 <AccountCircle />
               </IconButton>
             </Link>
           </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
     </div>
   );
 };

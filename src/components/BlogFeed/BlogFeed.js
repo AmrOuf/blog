@@ -26,7 +26,12 @@ const BlogFeed = ({
 
   const blogList = blogs.map((blog) => {
     return (
-      <BlogCard key={blog._id} blog={blog} author={blog.author}></BlogCard>
+      <BlogCard
+        key={blog._id}
+        blog={blog}
+        author={blog.author}
+        history={history}
+      ></BlogCard>
     );
   });
 

@@ -1,9 +1,40 @@
 import axios from 'axios';
 
-const addBlog = (blog) => ({
-  type: 'ADD_BLOG',
-  blog: blog,
-});
+const addBlog = (blog, token) => {
+  return async () => {
+    const savedBlog = await axios.post(
+      'http://localhost:3000/blogs/add',
+      {
+        title: blog.title,
+        body: blog.body,
+        tags: blog.tags,
+      },
+      {
+        headers: { Authorization: token },
+      }
+    );
+    console.log(savedBlog);
+    // dispatch(setBlogs(blogs.data));
+    return savedBlog;
+  };
+};
+
+const editBlog = (id, blog, token) => {
+  return async () => {
+    const { data } = await axios.patch(
+      `http://localhost:3000/blogs/edit/${id}`,
+      {
+        title: blog.title,
+        body: blog.body,
+        tags: blog.tags,
+      },
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return data;
+  };
+};
 
 const deleteBlog = (blog) => ({
   type: 'DELETE_BLOG',
@@ -29,6 +60,18 @@ const fetchBlogs = (pageNumber, pageSize) => {
   };
 };
 
+const fetchBlogById = (id, token) => {
+  return async () => {
+    const { data } = await axios.get(
+      `http://localhost:3000/blogs/getById/${id}`,
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return data;
+  };
+};
+
 const fetchFollowingBlogs = (token) => {
   return async (dispatch) => {
     const blogs = await axios.get('http://localhost:3000/blogs/following', {
@@ -40,4 +83,12 @@ const fetchFollowingBlogs = (token) => {
   };
 };
 
-export { addBlog, deleteBlog, fetchBlogs, fetchFollowingBlogs, setBlogs };
+export {
+  addBlog,
+  editBlog,
+  deleteBlog,
+  fetchBlogs,
+  fetchFollowingBlogs,
+  fetchBlogById,
+  setBlogs,
+};
