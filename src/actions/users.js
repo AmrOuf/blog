@@ -28,23 +28,24 @@ const logInUser = (credentials) => {
 
 const fetchUser = (id) => {
   return async (dispatch) => {
-    console.log('calling backend..');
     const data = await axios.get(`http://localhost:3000/users/${id}`);
-    console.log(data);
     return data;
+  };
+};
+
+const editUser = (id, user, token) => {
+  return async () => {
+    const data = await axios.patch(
+      `http://localhost:3000/users/edit/${id}`,
+      { user: user },
+      { headers: { Authorization: token } }
+    );
   };
 };
 
 const deleteBlogFromUser = (id) => ({
   type: 'DELETE_BLOG',
   id,
-});
-
-// may remove edit
-const editUser = (id, user) => ({
-  type: 'EDIT_USER',
-  id: id,
-  user: user,
 });
 
 export {

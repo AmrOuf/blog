@@ -65,7 +65,7 @@ const SignIn = ({ history, logInUser, loggedIn }) => {
     const authenticatedUser = await logInUser(data);
     localStorage.setItem('user', JSON.stringify(authenticatedUser));
     // history.replace(`/profile/${authenticatedUser.user._id}`);
-    history.replace(`/1`);
+    history.replace(`/`);
   };
 
   return (

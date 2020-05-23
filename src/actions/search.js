@@ -29,11 +29,10 @@ const fetchBlogsByTitle = (token, query) => {
   };
 };
 
-const fetchBlogsByTags = (token, query, pageNumber, pageSize) => {
+const fetchBlogsByTags = (token, query) => {
   return async () => {
-    const { data } = await axios.post(
+    const { data } = await axios.get(
       `http://localhost:3000/blogs/searchbytags?keyword=${query}`,
-      {},
       {
         headers: { Authorization: token },
       }

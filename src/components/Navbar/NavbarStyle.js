@@ -68,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: 'white',
     textDecoration: 'none',
+    marginRight: theme.spacing(5),
   },
 }));
 

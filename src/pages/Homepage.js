@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Container from '@material-ui/core/Container';
@@ -57,14 +57,16 @@ const Homepage = ({ history, fetchBlogs, loggedIn, match }) => {
           </Grid>
         </Grid>
       </Container>
-      <Fab
-        className={classes.addBtn}
-        color="primary"
-        aria-label="add"
-        onClick={handleClickOpen}
-      >
-        <AddIcon />
-      </Fab>
+      {loggedIn.user && (
+        <Fab
+          className={classes.addBtn}
+          color="primary"
+          aria-label="add"
+          onClick={handleClickOpen}
+        >
+          <AddIcon />
+        </Fab>
+      )}
     </Fragment>
   );
 };

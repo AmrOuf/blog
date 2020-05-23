@@ -2,20 +2,22 @@ import axios from 'axios';
 
 const addBlog = (blog, token) => {
   return async () => {
-    const savedBlog = await axios.post(
-      'http://localhost:3000/blogs/add',
-      {
-        title: blog.title,
-        body: blog.body,
-        tags: blog.tags,
-      },
-      {
-        headers: { Authorization: token },
-      }
-    );
-    console.log(savedBlog);
-    // dispatch(setBlogs(blogs.data));
-    return savedBlog;
+    console.log(blog);
+    console.log(token);
+
+    // const formData = new FormData();
+    // formData.append('title', blog.title);
+    // formData.append('body', blog.body);
+    // formData.append('tags', blog.tags);
+    // formData.append('image', '');
+
+    // console.log(formData);
+    const { data } = await axios.post('http://localhost:3000/blogs/add', blog, {
+      headers: { Authorization: token },
+    });
+    // console.log(savedBlog);
+
+    return data;
   };
 };
 

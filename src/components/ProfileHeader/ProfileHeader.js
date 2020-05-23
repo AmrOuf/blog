@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -31,16 +31,14 @@ const ProfileHeader = ({
   editUser,
 }) => {
   const classes = useStyles();
-  let followBtn = null;
+  // let followBtn = null;
+  let [followBtn, setFollowBtn] = useState(null);
 
-  const handleFollow = () => {
+  const handleFollow = async () => {
     loggedIn.user.following.push(viewedUser.user._id);
     viewedUser.user.followers++;
-    // do the edit in the backend di 7aga zeft
-    editUser(loggedIn.user._id, loggedIn.user);
-    editUser(viewedUser.user._id, viewedUser.user);
 
-    followBtn = (
+    setFollowBtn(
       <Button
         fullWidth
         variant="contained"
@@ -50,16 +48,19 @@ const ProfileHeader = ({
         Unfollow
       </Button>
     );
+
+    await editUser(loggedIn.user._id, loggedIn.user, loggedIn.token);
+    await editUser(viewedUser.user._id, viewedUser.user, loggedIn.token);
   };
 
-  const handleUnfollow = () => {
-    let filtered = loggedInUser.following.filter((id) => id !== viewedUser.id);
-    loggedInUser.following = filtered;
-    viewedUser.followers--;
-    editUser(loggedInUser.id, loggedInUser);
-    editUser(viewedUser.id, viewedUser);
+  const handleUnfollow = async () => {
+    let filtered = loggedIn.user.following.filter(
+      (id) => id !== viewedUser.user._id
+    );
+    loggedIn.user.following = filtered;
+    viewedUser.user.followers--;
 
-    followBtn = (
+    setFollowBtn(
       <Button
         fullWidth
         variant="contained"
@@ -69,9 +70,10 @@ const ProfileHeader = ({
         Follow
       </Button>
     );
-  };
 
-  console.log(viewedUser);
+    await editUser(loggedIn.user._id, loggedIn.user, loggedIn.token);
+    await editUser(viewedUser.user._id, viewedUser.user, loggedIn.token);
+  };
 
   if (loggedIn.user && loggedIn.user._id === viewedUser.user._id) {
     followBtn = null;
@@ -167,7 +169,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    editUser: (id, user) => dispatch(editUser(id, user)),
+    editUser: (id, user, token) => dispatch(editUser(id, user, token)),
   };
 };
 

@@ -1,16 +1,18 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-// import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 
 import BlogCard from '../BlogCard/BlogCard';
 import { fetchBlogs } from '../../actions/blogs';
+import axios from 'axios';
 
-// const useStyles = makeStyles((theme) => ({
-//   center: {
-//     textAlign: 'center',
-//   },
-// }));
+const useStyles = makeStyles((theme) => ({
+  pagination: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 const BlogFeed = ({
   loggedIn,
@@ -20,9 +22,17 @@ const BlogFeed = ({
   history,
   fetchBlogs,
 }) => {
-  // const classes = useStyles();
-
+  const classes = useStyles();
   const [page, setPage] = useState(pageNumber);
+  const [pageCount, setPageCount] = useState(1);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get(`http://localhost:3000/blogs/count`);
+      setPageCount(Math.ceil(data.count / pageSize));
+      await fetchBlogs(pageNumber - 1, pageSize);
+    })();
+  }, []);
 
   const blogList = blogs.map((blog) => {
     return (
@@ -37,7 +47,7 @@ const BlogFeed = ({
 
   const handleChange = async (event, value) => {
     setPage(value);
-    history.replace(`/${value}`);
+    // history.replace(`/${value}`);
     await fetchBlogs(value - 1, pageSize);
   };
 
@@ -45,10 +55,11 @@ const BlogFeed = ({
     <Fragment>
       {blogList}
       <Pagination
-        count={2}
+        count={pageCount}
         color="primary"
         page={page}
         onChange={handleChange}
+        className={classes.pagination}
       />
     </Fragment>
   );

@@ -1,11 +1,26 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import Paper from '@material-ui/core/Paper';
+import Container from '@material-ui/core/Container';
 
 import Navbar from '../components/Navbar/Navbar';
 import BlogCard from '../components/BlogCard/BlogCard';
 import { fetchUsers } from '../actions/search';
 import { fetchBlogsByTitle } from '../actions/search';
 import { fetchBlogsByTags } from '../actions/search';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(2),
+  },
+  link: {
+    textDecoration: 'none',
+  },
+}));
 
 const SearchResults = ({
   blogs,
@@ -15,6 +30,7 @@ const SearchResults = ({
   fetchBlogsByTitle,
   fetchBlogsByTags,
 }) => {
+  const classes = useStyles();
   const [searchResults, setSearchResults] = useState(null);
   let users = null;
   let fetchedBlogs = null;
@@ -50,7 +66,13 @@ const SearchResults = ({
       } else {
         users = await fetchUsers(user.token, search.searchQuery);
         const userList = users.map((user) => {
-          return <h1 key={user._id}>{user.firstName}</h1>;
+          return (
+            <Paper key={user._id} className={classes.paper}>
+              <Link to={`/profile/${user._id}`} className={classes.link}>
+                {user.firstName} {user.lastName}
+              </Link>
+            </Paper>
+          );
         });
         setSearchResults(userList);
       }
@@ -60,7 +82,7 @@ const SearchResults = ({
   return (
     <Fragment>
       <Navbar history={history}></Navbar>
-      {searchResults}
+      <Container>{searchResults}</Container>
     </Fragment>
   );
 };

@@ -19,8 +19,11 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
-import { deleteBlog } from '../../actions/blogs';
+import { deleteBlog, fetchBlogs } from '../../actions/blogs';
+import { setBlogs } from '../../actions/blogs';
 import { deleteBlogFromUser } from '../../actions/users';
+import { Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,11 +54,15 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+    cursor: 'pointer',
   },
   chip: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     marginLeft: theme.spacing(1),
+  },
+  pointer: {
+    cursor: 'pointer',
   },
 }));
 
@@ -66,6 +73,7 @@ const BlogCard = ({
   history,
   deleteBlog,
   deleteBlogFromUser,
+  setBlogs,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -90,16 +98,11 @@ const BlogCard = ({
   };
 
   const handleDelete = async () => {
-    // make an action to delete from state
-
-    // console.log(loggedIn);
-    // shouldn't loggedIn state be updated by now?
-
     axios
       .delete(`http://localhost:3000/blogs/delete/${blog._id}`, {
         headers: { Authorization: loggedIn.token },
       })
-      .then(() => {
+      .then(async () => {
         deleteBlogFromUser(blog._id);
         const blogArray = loggedIn.blogs.filter(
           (currentBlog) => currentBlog._id !== blog._id
@@ -110,7 +113,9 @@ const BlogCard = ({
           user: loggedIn.user,
           blogs: blogArray,
         };
-        console.log(loggedInTmp);
+        // console.log(blogArray);
+        // await fetchBlogs(0, 5);
+        // setBlogs(loggedInTmp.blogs);
         localStorage.setItem('user', JSON.stringify(loggedInTmp));
       });
   };
@@ -166,40 +171,81 @@ const BlogCard = ({
     );
   }
 
-  const tagList = chipData.map((data) => {
-    return (
-      <Chip
-        key={data}
-        label={data.toLowerCase()}
-        color="primary"
-        clickable
-        className={classes.chip}
-      />
-    );
-  });
+  let tagList = null;
+  if (chipData.length > 0 && chipData[0].length > 0) {
+    tagList = chipData.map((data) => {
+      return (
+        <Chip
+          key={data}
+          label={data.toLowerCase()}
+          color="primary"
+          className={classes.chip}
+        />
+      );
+    });
+  }
+
+  const goToBlog = () => {
+    if (loggedIn.user) {
+      history.push(`/blog-details/${blog._id}`);
+    }
+  };
+
+  const d = new Date(blog.createdAt);
+  const date = `${d.getDate()} - ${d.getMonth() + 1} - ${d.getFullYear()}`;
+
+  let firstName = 'A';
+  let title = '';
+  let blogBody = '';
+  if (authorState.firstName) {
+    firstName = authorState.firstName[0];
+    if (blogState.title.length >= 25)
+      title = `${blogState.title.substring(0, 25)}...`;
+    else title = blogState.title;
+
+    if (blogState.body.length >= 300)
+      blogBody = `${blogState.body.substring(0, 300)}...`;
+    else blogBody = blogState.body;
+  }
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            {authorState.firstName[0]}
+          <Avatar
+            aria-label="recipe"
+            className={classes.avatar}
+            onClick={goToBlog}
+          >
+            {firstName}
           </Avatar>
         }
         action={optionsMenu}
-        title={blogState.title}
-        subheader="September 14, 2016"
+        title={title}
+        subheader={date}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {blogState.body}
+          {blogBody}
         </Typography>
       </CardContent>
-      <CardMedia
+      {/* <CardMedia
         className={classes.media}
-        image="/images/paella.jpg"
-        title="Paella dish"
+        image={blog.image}
+        title="Blog image"
       />
+      <Box
+        component="img"
+        display="block"
+        boxShadow={2}
+        src={`${blog.image}`}
+      ></Box>
+
+      <img src={`http://localhost:3001/${blog.image}`} />
+      <img
+        src={`http://localhost:3001/public/uploads/image-1589803706239.png`}
+      /> */}
+
       {tagList}
 
       {renderMobileMenu}
@@ -217,6 +263,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     deleteBlog: (blog) => dispatch(deleteBlog(blog)),
     deleteBlogFromUser: (id) => dispatch(deleteBlogFromUser(id)),
+    setBlogs: (blogs) => dispatch(setBlogs(blogs)),
   };
 };
 

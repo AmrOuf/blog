@@ -9,7 +9,10 @@ import BlogFeed from '../components/BlogFeed/BlogFeed';
 import { setLoggedInUser } from '../actions/users';
 import { fetchFollowingBlogs } from '../actions/blogs';
 
-const Following = ({ history, fetchFollowingBlogs, loggedIn }) => {
+const Following = ({ history, fetchFollowingBlogs, loggedIn, match }) => {
+  const pageNumber = +match.params.pageNumber || 1;
+  const pageSize = 5;
+
   useEffect(() => {
     (async () => {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -28,7 +31,11 @@ const Following = ({ history, fetchFollowingBlogs, loggedIn }) => {
         <Grid container spacing={3}>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
-            <BlogFeed></BlogFeed>
+            <BlogFeed
+              pageNumber={pageNumber}
+              pageSize={pageSize}
+              history={history}
+            ></BlogFeed>
           </Grid>
         </Grid>
       </Container>

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { string, object } from 'yup';
+import { DropzoneArea } from 'material-ui-dropzone';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
+import Box from '@material-ui/core/Box';
 
 import { useForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
 const AddBlogForm = ({ loggedIn, addBlog, history }) => {
   const classes = useStyles();
-  const [chipData, setChipData] = React.useState([]);
+  const [chipData, setChipData] = useState([]);
+  const [imgFile, setImgFile] = useState(null);
 
   const schema = object().shape({
     title: string().required('Blog title is required!'),
@@ -61,10 +64,12 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
     const newBlog = {
       ...blog,
       tags: [...chipData],
+      // image: imgFile,
     };
 
-    addBlog(newBlog, loggedIn.token);
-    history.replace('/');
+    const savedBlog = await addBlog(newBlog, loggedIn.token);
+    console.log(savedBlog);
+    history.push('/');
   };
 
   const handleDelete = (chipToDelete) => () => {
@@ -77,6 +82,15 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
       setChipData([...chipData, e.target.value.toLowerCase()]);
       e.target.value = '';
     }
+  };
+
+  const handleFileChange = (files) => {
+    const file = files[0];
+    const fReader = new FileReader();
+    if (file) fReader.readAsDataURL(file);
+    fReader.onloadend = () => {
+      setImgFile(file);
+    };
   };
 
   const tagList = chipData.map((data) => {
@@ -120,6 +134,19 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
             inputRef={register}
           />
         </Grid>
+        {/* <Grid item xs={12}>
+          <Box>
+            <DropzoneArea
+              onChange={handleFileChange}
+              acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+              filesLimit={1}
+              dropzoneText={`Drag & Drop image here or click`}
+              maxFileSize={5000000}
+              showPreviewsInDropzone={true}
+              clearOnUnmount={true}
+            />
+          </Box>
+        </Grid> */}
         <Grid item xs={12}>
           <TextField
             name="tags"

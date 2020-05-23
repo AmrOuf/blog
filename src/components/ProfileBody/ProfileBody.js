@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn }) => {
+const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn, history }) => {
   // const classes = useStyles();
 
   // console.log(viewedUser.blogs);
@@ -34,6 +34,7 @@ const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn }) => {
             key={blog._id}
             blog={blog}
             author={loggedIn.user}
+            history={history}
           ></BlogCard>
         );
       });
@@ -45,6 +46,7 @@ const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn }) => {
             key={blog._id}
             blog={blog}
             author={viewedUser.user}
+            history={history}
           ></BlogCard>
         );
       });

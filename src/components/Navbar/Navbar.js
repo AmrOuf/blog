@@ -168,10 +168,23 @@ const Navbar = ({ search, setFilter, history, loggedIn }) => {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/1" className={classes.link}>
+            <Link to="/" className={classes.link}>
               BLOG
             </Link>
           </Typography>
+          <Typography className={classes.title} variant="body1" noWrap>
+            <Link to="/" className={classes.link}>
+              HOME
+            </Link>
+          </Typography>
+          {loggedIn.user && (
+            <Typography className={classes.title} variant="body1" noWrap>
+              <Link to="/following" className={classes.link}>
+                FOLLOWING
+              </Link>
+            </Typography>
+          )}
+
           {renderSearch}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

@@ -68,7 +68,10 @@ const Profile = ({
               loggedInUser={loggedInUser}
             ></ProfileHeader>
             <Divider className={classes.mt} variant="middle" />
-            <ProfileBody viewedUser={viewedUser}></ProfileBody>
+            <ProfileBody
+              viewedUser={viewedUser}
+              history={history}
+            ></ProfileBody>
           </Grid>
         </Grid>
       </Container>
