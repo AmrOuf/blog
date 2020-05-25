@@ -82,8 +82,9 @@ const EditBlogForm = ({
       tags: [...chipData],
     };
 
-    editBlog(blogId, newBlog, loggedIn.token);
-    history.replace('/');
+    const editedBlog = await editBlog(blogId, newBlog, loggedIn.token);
+    console.log(editedBlog);
+    history.push('/');
   };
 
   const handleDelete = (chipToDelete) => () => {

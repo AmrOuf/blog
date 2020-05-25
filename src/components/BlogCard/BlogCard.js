@@ -212,17 +212,14 @@ const BlogCard = ({
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar
-            aria-label="recipe"
-            className={classes.avatar}
-            onClick={goToBlog}
-          >
+          <Avatar aria-label="recipe" className={classes.avatar}>
             {firstName}
           </Avatar>
         }
-        action={optionsMenu}
         title={title}
         subheader={date}
+        onClick={goToBlog}
+        className={classes.pointer}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -247,8 +244,6 @@ const BlogCard = ({
       /> */}
 
       {tagList}
-
-      {renderMobileMenu}
     </Card>
   );
 };

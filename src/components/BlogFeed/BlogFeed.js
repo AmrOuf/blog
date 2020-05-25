@@ -21,6 +21,7 @@ const BlogFeed = ({
   pageSize,
   history,
   fetchBlogs,
+  isInHomepage,
 }) => {
   const classes = useStyles();
   const [page, setPage] = useState(pageNumber);
@@ -54,13 +55,15 @@ const BlogFeed = ({
   return (
     <Fragment>
       {blogList}
-      <Pagination
-        count={pageCount}
-        color="primary"
-        page={page}
-        onChange={handleChange}
-        className={classes.pagination}
-      />
+      {isInHomepage && (
+        <Pagination
+          count={pageCount}
+          color="primary"
+          page={page}
+          onChange={handleChange}
+          className={classes.pagination}
+        />
+      )}
     </Fragment>
   );
 };
