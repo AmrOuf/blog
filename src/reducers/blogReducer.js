@@ -3,8 +3,8 @@ const blogDefaultState = [];
 const blogReducer = (state = blogDefaultState, action) => {
   switch (action.type) {
     case 'SET_BLOGS':
-      console.log(state);
-      console.log(action.blogs);
+      // console.log(state);
+      // console.log(action.blogs);
       return [...action.blogs];
     case 'ADD_BLOG':
       return [...state, action.blog];

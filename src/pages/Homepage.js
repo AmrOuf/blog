@@ -53,6 +53,7 @@ const Homepage = ({ history, fetchBlogs, loggedIn, match }) => {
               pageNumber={pageNumber}
               pageSize={pageSize}
               history={history}
+              isInHomepage={true}
             ></BlogFeed>
           </Grid>
         </Grid>

@@ -35,6 +35,7 @@ const Following = ({ history, fetchFollowingBlogs, loggedIn, match }) => {
               pageNumber={pageNumber}
               pageSize={pageSize}
               history={history}
+              isInHomepage={false}
             ></BlogFeed>
           </Grid>
         </Grid>
