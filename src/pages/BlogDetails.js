@@ -12,9 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import Navbar from '../components/Navbar/Navbar';
-import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
-import ProfileBody from '../components/ProfileBody/ProfileBody';
-import { fetchUser } from '../actions/users';
 import { deleteBlog, fetchBlogs } from '../actions/blogs';
 import { setBlogs } from '../actions/blogs';
 import { deleteBlogFromUser } from '../actions/users';
@@ -23,12 +20,6 @@ import { Chip, Menu } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
-  // pt: {
-  //   paddingTop: theme.spacing(6),
-  // },
-  // mt: {
-  //   marginTop: theme.spacing(4),
-  // },
   chip: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -51,8 +42,6 @@ const BlogDetails = ({
   const classes = useStyles();
   const id = match.params.id;
   const [blog, setBlog] = useState(null);
-
-  // console.log(loggedIn)
 
   useEffect(() => {
     (async () => {
@@ -101,11 +90,6 @@ const BlogDetails = ({
       });
   };
 
-  // if (loggedIn.user && blog) {
-  //   console.log(loggedIn.user._id);
-  //   console.log(blog.author._id);
-  // }
-
   return (
     <Fragment>
       <Navbar history={history}></Navbar>
@@ -141,7 +125,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  // fetchBlogs: (token) => dispatch(fetchBlogs(token)),
   fetchBlogById: (id, token) => dispatch(fetchBlogById(id, token)),
   deleteBlog: (blog) => dispatch(deleteBlog(blog)),
   deleteBlogFromUser: (id) => dispatch(deleteBlogFromUser(id)),

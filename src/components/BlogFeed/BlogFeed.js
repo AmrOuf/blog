@@ -7,7 +7,7 @@ import BlogCard from '../BlogCard/BlogCard';
 import { fetchBlogs } from '../../actions/blogs';
 import axios from 'axios';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   pagination: {
     display: 'flex',
     justifyContent: 'center',
@@ -50,7 +50,6 @@ const BlogFeed = ({
 
   const handleChange = async (event, value) => {
     setPage(value);
-    // history.replace(`/${value}`);
     await fetchBlogs(value - 1, pageSize);
   };
 

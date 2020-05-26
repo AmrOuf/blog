@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -52,9 +51,6 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: 'flex',
-    // [theme.breakpoints.up('md')]: {
-    //   display: 'flex',
-    // },
   },
   sectionMobile: {
     display: 'flex',

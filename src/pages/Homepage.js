@@ -28,7 +28,6 @@ const Homepage = ({ history, fetchBlogs, loggedIn, match }) => {
   useEffect(() => {
     (async () => {
       const user = JSON.parse(localStorage.getItem('user'));
-      // await fetchBlogs(user.token);
       await fetchBlogs(pageNumber - 1, pageSize);
       if (user) {
         setLoggedInUser(user);

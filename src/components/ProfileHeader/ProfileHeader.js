@@ -31,7 +31,6 @@ const ProfileHeader = ({
   editUser,
 }) => {
   const classes = useStyles();
-  // let followBtn = null;
   let [followBtn, setFollowBtn] = useState(null);
 
   const handleFollow = async () => {
@@ -74,11 +73,6 @@ const ProfileHeader = ({
     await editUser(loggedIn.user._id, loggedIn.user, loggedIn.token);
     await editUser(viewedUser.user._id, viewedUser.user, loggedIn.token);
   };
-
-  // if (loggedIn.user && viewedUser.user) {
-  //   console.log(loggedIn.user.following);
-  //   console.log(viewedUser.user);
-  // }
 
   if (loggedIn.user && loggedIn.user._id === viewedUser.user._id) {
     followBtn = null;

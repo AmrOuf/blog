@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { string, object } from 'yup';
 import { DropzoneArea } from 'material-ui-dropzone';
@@ -64,7 +63,6 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
     const newBlog = {
       ...blog,
       tags: [...chipData],
-      // image: imgFile,
     };
 
     const savedBlog = await addBlog(newBlog, loggedIn.token);
@@ -134,19 +132,6 @@ const AddBlogForm = ({ loggedIn, addBlog, history }) => {
             inputRef={register}
           />
         </Grid>
-        {/* <Grid item xs={12}>
-          <Box>
-            <DropzoneArea
-              onChange={handleFileChange}
-              acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-              filesLimit={1}
-              dropzoneText={`Drag & Drop image here or click`}
-              maxFileSize={5000000}
-              showPreviewsInDropzone={true}
-              clearOnUnmount={true}
-            />
-          </Box>
-        </Grid> */}
         <Grid item xs={12}>
           <TextField
             name="tags"

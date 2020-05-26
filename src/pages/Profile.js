@@ -49,14 +49,9 @@ const Profile = ({
           }
         );
         setViewedUser(data);
-        // setBlogs(viewedUser.blogs);
       }
     })();
   }, []);
-
-  // console.log(viewedUser);
-
-  // console.log(blogs);
 
   return (
     <Fragment>

@@ -51,7 +51,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  // fetchBlogs: (token) => dispatch(fetchBlogs(token)),
   fetchFollowingBlogs: (token) => dispatch(fetchFollowingBlogs(token)),
 });
 

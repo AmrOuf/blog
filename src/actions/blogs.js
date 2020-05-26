@@ -2,16 +2,6 @@ import axios from 'axios';
 
 const addBlog = (blog, token) => {
   return async () => {
-    console.log(blog);
-    console.log(token);
-
-    // const formData = new FormData();
-    // formData.append('title', blog.title);
-    // formData.append('body', blog.body);
-    // formData.append('tags', blog.tags);
-    // formData.append('image', '');
-
-    // console.log(formData);
     const { data } = await axios.post(
       `${process.env.REACT_APP_BACKEND_URI}/blogs/add`,
       blog,
@@ -19,8 +9,6 @@ const addBlog = (blog, token) => {
         headers: { Authorization: token },
       }
     );
-    // console.log(savedBlog);
-
     return data;
   };
 };
@@ -54,9 +42,6 @@ const setBlogs = (blogs) => ({
 
 const fetchBlogs = (pageNumber, pageSize) => {
   return async (dispatch) => {
-    // const blogs = await axios.get('http://localhost:3000/blogs', {
-    //   headers: { Authorization: token },
-    // });
     const blogs = await axios.post(
       `${process.env.REACT_APP_BACKEND_URI}/blogs`,
       {
@@ -89,7 +74,6 @@ const fetchFollowingBlogs = (token) => {
         headers: { Authorization: token },
       }
     );
-    // console.log(blogs.data);
     dispatch(setBlogs(blogs.data));
     return blogs.data;
   };

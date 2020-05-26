@@ -1,29 +1,10 @@
 import React, { Fragment } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import BlogCard from '../BlogCard/BlogCard';
 import { setBlogs } from '../../actions/blogs';
 
-const useStyles = makeStyles((theme) => ({
-  center: {
-    textAlign: 'center',
-  },
-}));
-
 const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn, history }) => {
-  // const classes = useStyles();
-
-  // console.log(viewedUser.blogs);
-  // useEffect(() => {
-  //   (() => {
-  //     setBlogs(viewedUser.blogs);
-  //   })();
-  // }, []);
-
-  // console.log(loggedIn);
-  // console.log(viewedUser);
-
   let blogList = null;
 
   if (loggedIn.user && viewedUser.user) {
@@ -52,12 +33,6 @@ const ProfileBody = ({ viewedUser, setBlogs, blogs, loggedIn, history }) => {
       });
     }
   }
-
-  // const blogList = viewedUser.blogs.map((blog) => {
-  //   return (
-  //     <BlogCard key={blog._id} blog={blog} author={viewedUser.user}></BlogCard>
-  //   );
-  // });
 
   return <Fragment>{blogList}</Fragment>;
 };

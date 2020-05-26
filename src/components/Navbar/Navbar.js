@@ -12,9 +12,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import useStyles from './NavbarStyle';
-import { setFilter } from '../../actions/search';
 
-const Navbar = ({ search, setFilter, history, loggedIn }) => {
+const Navbar = ({ search, history, loggedIn }) => {
   const classes = useStyles();
   const [placeholder, setPlaceholder] = useState('Search...');
 
@@ -77,7 +76,6 @@ const Navbar = ({ search, setFilter, history, loggedIn }) => {
     : null;
 
   const handleChangeFilter = (filter) => {
-    // setFilter(filter);
     search.activeFilter = filter;
 
     // change placeholder
@@ -108,14 +106,6 @@ const Navbar = ({ search, setFilter, history, loggedIn }) => {
       console.log(search);
       history.replace('/results');
     }
-  };
-
-  const handleProfileClick = () => {
-    // if (loggedIn.user) {
-    //   history.replace(`/profile/${loggedIn.user._id}`);
-    // } else {
-    //   history.replace('/sign-in');
-    // }
   };
 
   const profileLink = loggedIn.user
@@ -153,7 +143,6 @@ const Navbar = ({ search, setFilter, history, loggedIn }) => {
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleProfileClick}
                 color="inherit"
               >
                 <AccountCircle />
@@ -173,10 +162,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setFilter: (filter) => dispatch(setFilter(filter)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps)(Navbar);

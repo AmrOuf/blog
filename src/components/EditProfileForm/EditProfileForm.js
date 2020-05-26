@@ -46,9 +46,6 @@ const EditProfileForm = ({ users, loggedInUser, editUser }) => {
     mode: 'onBlur',
   });
 
-  // this (1) should be the logged in user id
-  // const loggedInUser = users.find((user) => user.id === 1);
-
   const onSubmit = async (user) => {
     const updatedUser = { ...loggedInUser, ...user };
     editUser(loggedInUser.id, updatedUser);

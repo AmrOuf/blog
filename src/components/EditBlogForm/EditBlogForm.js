@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { string, object } from 'yup';
 
@@ -46,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
 
 const EditBlogForm = ({
   loggedIn,
-  addBlog,
   editBlog,
   history,
   blogId,
