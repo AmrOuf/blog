@@ -114,7 +114,6 @@ const BlogCard = ({ blog, loggedIn, author, history }) => {
           {blogBody}
         </Typography>
       </CardContent>
-
       {tagList}
     </Card>
   );

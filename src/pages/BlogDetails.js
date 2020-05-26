@@ -16,7 +16,7 @@ import { deleteBlog, fetchBlogs } from '../actions/blogs';
 import { setBlogs } from '../actions/blogs';
 import { deleteBlogFromUser } from '../actions/users';
 import { fetchBlogById } from '../actions/blogs';
-import { Chip, Menu } from '@material-ui/core';
+import { Chip, Menu, Paper } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,14 @@ const useStyles = makeStyles((theme) => ({
   justify: {
     textAlign: 'justify',
   },
-  userControls: {},
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+  },
+  userControls: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+  },
 }));
 
 const BlogDetails = ({
@@ -94,25 +101,28 @@ const BlogDetails = ({
     <Fragment>
       <Navbar history={history}></Navbar>
       <Container className={classes.justify}>
-        {loggedIn.user && blog && loggedIn.user._id === blog.author._id && (
-          <div className={classes.userControls}>
-            <IconButton color="inherit" onClick={handleEdit}>
-              <EditOutlinedIcon />
-            </IconButton>
-            <IconButton color="inherit" onClick={handleDelete}>
-              <DeleteOutlinedIcon />
-            </IconButton>
-          </div>
-        )}
-        <h1>{loggedIn.user && blog && blog.title}</h1>
-        <p>{loggedIn.user && blog && blog.body}</p>
-        {tagList}
-        <p>
-          <span>Author: </span>
-          <Link to={`/profile/${blog && blog.author._id}`}>
-            {blog && blog.author.firstName} {blog && blog.author.lastName}
-          </Link>
-        </p>
+        <Paper className={classes.paper}>
+          {loggedIn.user && blog && loggedIn.user._id === blog.author._id && (
+            <div className={classes.userControls}>
+              <IconButton color="inherit" onClick={handleEdit}>
+                <EditOutlinedIcon />
+              </IconButton>
+              <IconButton color="inherit" onClick={handleDelete}>
+                <DeleteOutlinedIcon />
+              </IconButton>
+            </div>
+          )}
+          <h1>{loggedIn.user && blog && blog.title}</h1>
+          <p>{loggedIn.user && blog && blog.body}</p>
+          {tagList}
+          <Divider></Divider>
+          <p>
+            <span>Author: </span>
+            <Link to={`/profile/${blog && blog.author._id}`}>
+              {blog && blog.author.firstName} {blog && blog.author.lastName}
+            </Link>
+          </p>
+        </Paper>
       </Container>
     </Fragment>
   );
