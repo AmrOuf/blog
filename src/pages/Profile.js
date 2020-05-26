@@ -41,11 +41,11 @@ const Profile = ({
 
   useEffect(() => {
     (async () => {
-      if (loggedInUser) {
+      if (loggedIn.user) {
         const { data } = await axios.get(
           `${process.env.REACT_APP_BACKEND_URI}/users/${id}`,
           {
-            headers: { Authorization: loggedInUser.token },
+            headers: { Authorization: loggedIn.token },
           }
         );
         setViewedUser(data);
@@ -68,7 +68,7 @@ const Profile = ({
             <ProfileHeader
               viewedId={id}
               viewedUser={viewedUser}
-              loggedInUser={loggedInUser}
+              loggedInUser={loggedIn.user}
             ></ProfileHeader>
             <Divider className={classes.mt} variant="middle" />
             <ProfileBody

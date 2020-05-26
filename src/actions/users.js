@@ -37,7 +37,7 @@ const fetchUser = (id) => {
 
 const editUser = (id, user, token) => {
   return async () => {
-    const data = await axios.patch(
+    await axios.patch(
       `${process.env.REACT_APP_BACKEND_URI}/users/edit/${id}`,
       { user: user },
       { headers: { Authorization: token } }

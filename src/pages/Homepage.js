@@ -1,16 +1,14 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Navbar from '../components/Navbar/Navbar';
 import BlogFeed from '../components/BlogFeed/BlogFeed';
-import AddBlogForm from '../components/AddBlogForm/AddBlogForm';
 import { setLoggedInUser } from '../actions/users';
 import { fetchBlogs } from '../actions/blogs';
 

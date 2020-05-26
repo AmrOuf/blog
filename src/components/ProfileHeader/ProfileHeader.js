@@ -75,6 +75,11 @@ const ProfileHeader = ({
     await editUser(viewedUser.user._id, viewedUser.user, loggedIn.token);
   };
 
+  // if (loggedIn.user && viewedUser.user) {
+  //   console.log(loggedIn.user.following);
+  //   console.log(viewedUser.user);
+  // }
+
   if (loggedIn.user && loggedIn.user._id === viewedUser.user._id) {
     followBtn = null;
   } else if (
@@ -106,15 +111,16 @@ const ProfileHeader = ({
     );
   }
 
-  const following = viewedUser.user.following
-    ? viewedUser.user.following.length
-    : 0;
-
+  let following = 0;
   let blogCount = 0;
-  // console.log(loggedIn);
+
   if (loggedIn.user && loggedIn.user._id === viewedUser.user._id) {
+    following = loggedIn.user.following.length;
     blogCount = loggedIn.blogs.length;
   } else {
+    following = viewedUser.user.following
+      ? viewedUser.user.following.length
+      : 0;
     blogCount = viewedUser.blogs ? viewedUser.blogs.length : 0;
   }
 

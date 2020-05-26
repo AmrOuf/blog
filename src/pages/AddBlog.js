@@ -1,6 +1,4 @@
-import React, { Fragment, useState } from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
+import React, { Fragment } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';

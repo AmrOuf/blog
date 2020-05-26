@@ -17,12 +17,11 @@ const Following = ({ history, fetchFollowingBlogs, loggedIn, match }) => {
     (async () => {
       const user = JSON.parse(localStorage.getItem('user'));
       await fetchFollowingBlogs(user.token);
-      // console.log(user);
       if (user) {
         setLoggedInUser(user);
       }
     })();
-  }, []);
+  });
 
   return (
     <Fragment>
