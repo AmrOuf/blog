@@ -8,7 +8,7 @@ const setLoggedInUser = (data) => ({
 const addUser = (user) => {
   return async () => {
     const { data } = await axios.post(
-      'http://localhost:3000/users/register',
+      `${process.env.REACT_APP_BACKEND_URI}/users/register`,
       user
     );
     return data;
@@ -18,7 +18,7 @@ const addUser = (user) => {
 const logInUser = (credentials) => {
   return async (dispatch) => {
     const { data } = await axios.post(
-      'http://localhost:3000/users/login',
+      `${process.env.REACT_APP_BACKEND_URI}/users/login`,
       credentials
     );
     dispatch(setLoggedInUser(data));
@@ -28,7 +28,9 @@ const logInUser = (credentials) => {
 
 const fetchUser = (id) => {
   return async (dispatch) => {
-    const data = await axios.get(`http://localhost:3000/users/${id}`);
+    const data = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URI}/users/${id}`
+    );
     return data;
   };
 };
@@ -36,7 +38,7 @@ const fetchUser = (id) => {
 const editUser = (id, user, token) => {
   return async () => {
     const data = await axios.patch(
-      `http://localhost:3000/users/edit/${id}`,
+      `${process.env.REACT_APP_BACKEND_URI}/users/edit/${id}`,
       { user: user },
       { headers: { Authorization: token } }
     );

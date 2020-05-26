@@ -99,7 +99,7 @@ const BlogCard = ({
 
   const handleDelete = async () => {
     axios
-      .delete(`http://localhost:3000/blogs/delete/${blog._id}`, {
+      .delete(`${process.env.REACT_APP_BACKEND_URI}/blogs/delete/${blog._id}`, {
         headers: { Authorization: loggedIn.token },
       })
       .then(async () => {

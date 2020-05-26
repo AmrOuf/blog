@@ -8,7 +8,7 @@ const setFilter = (activeFilter) => ({
 const fetchUsers = (token, query) => {
   return async () => {
     const { data } = await axios.get(
-      `http://localhost:3000/users/search?keyword=${query}`,
+      `${process.env.REACT_APP_BACKEND_URI}/users/search?keyword=${query}`,
       {
         headers: { Authorization: token },
       }
@@ -20,7 +20,7 @@ const fetchUsers = (token, query) => {
 const fetchBlogsByTitle = (token, query) => {
   return async () => {
     const { data } = await axios.get(
-      `http://localhost:3000/blogs/searchbytitle?keyword=${query}`,
+      `${process.env.REACT_APP_BACKEND_URI}/blogs/searchbytitle?keyword=${query}`,
       {
         headers: { Authorization: token },
       }
@@ -32,7 +32,7 @@ const fetchBlogsByTitle = (token, query) => {
 const fetchBlogsByTags = (token, query) => {
   return async () => {
     const { data } = await axios.get(
-      `http://localhost:3000/blogs/searchbytags?keyword=${query}`,
+      `${process.env.REACT_APP_BACKEND_URI}/blogs/searchbytags?keyword=${query}`,
       {
         headers: { Authorization: token },
       }

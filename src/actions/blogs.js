@@ -12,9 +12,13 @@ const addBlog = (blog, token) => {
     // formData.append('image', '');
 
     // console.log(formData);
-    const { data } = await axios.post('http://localhost:3000/blogs/add', blog, {
-      headers: { Authorization: token },
-    });
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URI}/blogs/add`,
+      blog,
+      {
+        headers: { Authorization: token },
+      }
+    );
     // console.log(savedBlog);
 
     return data;
@@ -24,7 +28,7 @@ const addBlog = (blog, token) => {
 const editBlog = (id, blog, token) => {
   return async () => {
     const { data } = await axios.patch(
-      `http://localhost:3000/blogs/edit/${id}`,
+      `${process.env.REACT_APP_BACKEND_URI}/blogs/edit/${id}`,
       {
         title: blog.title,
         body: blog.body,
@@ -53,10 +57,13 @@ const fetchBlogs = (pageNumber, pageSize) => {
     // const blogs = await axios.get('http://localhost:3000/blogs', {
     //   headers: { Authorization: token },
     // });
-    const blogs = await axios.post('http://localhost:3000/blogs', {
-      pageNumber,
-      pageSize,
-    });
+    const blogs = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URI}/blogs`,
+      {
+        pageNumber,
+        pageSize,
+      }
+    );
     dispatch(setBlogs(blogs.data));
     return blogs.data;
   };
@@ -65,7 +72,7 @@ const fetchBlogs = (pageNumber, pageSize) => {
 const fetchBlogById = (id, token) => {
   return async () => {
     const { data } = await axios.get(
-      `http://localhost:3000/blogs/getById/${id}`,
+      `${process.env.REACT_APP_BACKEND_URI}/blogs/getById/${id}`,
       {
         headers: { Authorization: token },
       }
@@ -76,9 +83,12 @@ const fetchBlogById = (id, token) => {
 
 const fetchFollowingBlogs = (token) => {
   return async (dispatch) => {
-    const blogs = await axios.get('http://localhost:3000/blogs/following', {
-      headers: { Authorization: token },
-    });
+    const blogs = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URI}/blogs/following`,
+      {
+        headers: { Authorization: token },
+      }
+    );
     // console.log(blogs.data);
     dispatch(setBlogs(blogs.data));
     return blogs.data;

@@ -29,7 +29,9 @@ const BlogFeed = ({
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(`http://localhost:3000/blogs/count`);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URI}/blogs/count`
+      );
       setPageCount(Math.ceil(data.count / pageSize));
       await fetchBlogs(pageNumber - 1, pageSize);
     })();
