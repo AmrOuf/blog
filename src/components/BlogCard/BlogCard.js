@@ -87,8 +87,8 @@ const BlogCard = ({ blog, loggedIn, author, history }) => {
   let blogBody = '';
   if (authorState.firstName) {
     firstName = authorState.firstName[0];
-    if (blogState.title.length >= 25)
-      title = `${blogState.title.substring(0, 25)}...`;
+    if (blogState.title.length >= 40)
+      title = `${blogState.title.substring(0, 40)}...`;
     else title = blogState.title;
 
     if (blogState.body.length >= 300)
