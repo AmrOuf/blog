@@ -92,7 +92,9 @@ const EditBlogForm = ({
   const handleAddTag = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      setChipData([...chipData, e.target.value.toLowerCase()]);
+      if (e.target.value.trim() !== '') {
+        setChipData([...chipData, e.target.value.toLowerCase()]);
+      }
       e.target.value = '';
     }
   };
