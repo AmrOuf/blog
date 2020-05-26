@@ -8,10 +8,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+    display: 'block',
   },
   search: {
     position: 'relative',
@@ -26,6 +23,15 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
       width: 'auto',
+    },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+  responsive: {
+    marginRight: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
     },
   },
   searchIcon: {
@@ -57,9 +63,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
-  },
-  mr: {
-    marginRight: theme.spacing(1),
   },
   link: {
     color: 'white',

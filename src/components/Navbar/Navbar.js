@@ -39,7 +39,7 @@ const Navbar = ({ search, history, loggedIn }) => {
       <Button
         variant="contained"
         color="secondary"
-        className={classes.mr}
+        className={classes.responsive}
         onClick={() => handleChangeFilter(0)}
       >
         all
@@ -47,7 +47,7 @@ const Navbar = ({ search, history, loggedIn }) => {
       <Button
         variant="contained"
         color="secondary"
-        className={classes.mr}
+        className={classes.responsive}
         onClick={() => handleChangeFilter(1)}
       >
         users
@@ -55,7 +55,7 @@ const Navbar = ({ search, history, loggedIn }) => {
       <Button
         variant="contained"
         color="secondary"
-        className={classes.mr}
+        className={classes.responsive}
         onClick={() => handleChangeFilter(2)}
       >
         title
@@ -63,7 +63,7 @@ const Navbar = ({ search, history, loggedIn }) => {
       <Button
         variant="contained"
         color="secondary"
-        className={classes.mr}
+        className={classes.responsive}
         onClick={() => handleChangeFilter(3)}
       >
         tags
@@ -126,16 +126,9 @@ const Navbar = ({ search, history, loggedIn }) => {
               HOME
             </Link>
           </Typography>
-          {loggedIn.user && (
-            <Typography className={classes.title} variant="body1" noWrap>
-              <Link to="/following" className={classes.link}>
-                FOLLOWING
-              </Link>
-            </Typography>
-          )}
 
-          {renderSearch}
           <div className={classes.grow} />
+          {renderSearch}
           <div className={classes.sectionDesktop}>
             <Link to={profileLink} className={classes.link}>
               <IconButton
