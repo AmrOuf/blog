@@ -44,8 +44,8 @@ const Homepage = ({ history, fetchBlogs, loggedIn, match }) => {
       <Navbar history={history}></Navbar>
       <Container>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={3}></Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={2} md={3}></Grid>
+          <Grid item xs={12} sm={8} md={6}>
             <BlogFeed
               pageNumber={pageNumber}
               pageSize={pageSize}
